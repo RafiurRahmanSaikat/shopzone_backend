@@ -1,0 +1,192 @@
+###? Variables
+@baseUrl = http://localhost:8000/api
+<<<<<<< HEAD
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxMTk1NjU5LCJpYXQiOjE3Mzg2MDM2NTksImp0aSI6IjM3OTNlNDkwODQxMjRjOWFhZDdhMGQ1MTY4YTRlZWQ4IiwidXNlcl9pZCI6M30.N3mbgQPHyH1HcNPAFDTtBSxT2QOolFilICL3BrTgmCU
+=======
+@adminToken =
+>>>>>>> 65956c2 (Filtering Added)
+
+###!ADMIN
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "alice_johnson",
+  "password": "password123"
+}
+
+# "count": 12,
+#   "total_pages": 2,
+#   "next": "http://localhost:8000/api/products/?page=2",
+#   "previous": null,
+#   "results": [
+#   ],
+#   "page_size": 10
+
+###! 1. Admin Operations
+
+###? Get all products as admin
+GET {{baseUrl}}/products/
+Authorization: Bearer {{adminToken}}
+
+###? Get all Stores as admin
+GET {{baseUrl}}/stores/storeCategory
+Authorization: Bearer {{adminToken}}
+###? Get all Stores as admin
+DELETE  {{baseUrl}}/stores/storeCategory/7/
+Authorization: Bearer {{adminToken}}
+
+###? Get all Stores as admin
+PUT  {{baseUrl}}/stores/storeCategory/6/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+      "name": "HAHAH"
+
+}
+
+###? Get all Stores as admin
+POST {{baseUrl}}/stores/storeCategory
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+      "name": "Booksdd"
+
+}
+
+
+###? Get all Stores as admin
+GET {{baseUrl}}/stores/
+Authorization: Bearer {{adminToken}}
+
+
+###? Get all User Only Admin
+GET {{baseUrl}}/accounts/users
+Authorization: Bearer {{adminToken}}
+
+###? Create a product as admin (auto-approved)
+
+POST {{baseUrl}}/products/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "Admin Test Product 01",
+    "description": "Admin Test Product Description",
+    "price": 9.99,
+    "stock": 1,
+    "brand_id": 2,
+    "image": null,
+    "category_ids": [3, 2],
+    "store_id": 2
+}
+
+###? Update a product as admin (auto-approved)
+
+PUT {{baseUrl}}/products/11/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "updayed00 ",
+    "description": "A test product description",
+    "price": 9.25,
+    "stock": 1,
+    "image": null,
+    "brand_id": 3,
+    "category_ids": [2],
+    "store_id": 2
+}
+
+
+###? Create a Store
+
+POST {{baseUrl}}/stores/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "Admin Store",
+    "address": "456 New Address",
+    "location": "New Location",
+    "category_ids": [1, 2]
+}
+###? Update a Store
+
+PATCH  {{baseUrl}}/stores/6/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "Admin Storddde 6",
+    "address": "456 New Address",
+    "location": "New Location",
+    "category_ids": [1, 2]
+}
+
+###? Create a brands as admin
+
+POST {{baseUrl}}/brands/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "admin brand"
+
+}
+
+
+###? Create a category as admin
+POST {{baseUrl}}/categories/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "admin categories"
+
+}
+
+
+
+
+###! Delete store
+DELETE {{baseUrl}}/stores/6/
+Authorization: Bearer {{adminToken}}
+
+
+
+###? Change order status (store owner)
+PATCH {{baseUrl}}/orders/1ad1f9c6-4fc2-4dfd-9401-0e48373e64e1/update_status/
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "status": "Cancelled"
+}
+
+
+###? Change order status (Admin)
+PATCH {{baseUrl}}/orders/e5883977-b860-403c-9b7f-83636938bb06/update_status/
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "status": "Cancelled"
+}
+
+###? Admin Delete Account
+DELETE {{baseUrl}}/accounts/users/21/
+Authorization: Bearer {{adminToken}}
+
+
+
+
+# rm db.sqlite3
+# find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+# find . -path "*/migrations/*.pyc" -delete
+# djmm
+# djm
+# py manage.py populate_db
+# djs

@@ -1,0 +1,456 @@
+###? Variables
+@baseUrl = http://localhost:8000/api
+<<<<<<< HEAD
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxMTk1NjU5LCJpYXQiOjE3Mzg2MDM2NTksImp0aSI6IjM3OTNlNDkwODQxMjRjOWFhZDdhMGQ1MTY4YTRlZWQ4IiwidXNlcl9pZCI6M30.N3mbgQPHyH1HcNPAFDTtBSxT2QOolFilICL3BrTgmCU
+@storeOwnerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxNjE4MDE0LCJpYXQiOjE3MzkwMjYwMTQsImp0aSI6IjI5ZmZhN2Q4ZjY2NzQyOTFiYjU5YTRkNTNhYTJkNDQwIiwidXNlcl9pZCI6NX0.8hV956_GLxv41Uc_cOir5brEb2HQV_2xmqfm0DWNlD8
+@regularUserToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxMzU3NTQ2LCJpYXQiOjE3Mzg3NjU1NDYsImp0aSI6ImIzMTJmYTE3YjUxMDRhMmM4MzM3MjE2ODU0ZDFiMjRjIiwidXNlcl9pZCI6MX0.0HXd8lIKgi_GA3ynEXSikEaOnOEA15pyiarsbYG8NB8
+@testUserToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjI3MTc0LCJpYXQiOjE3MzgxNDA3NzQsImp0aSI6IjI0NmQ4MDE4M2QzMjRiNTc4YjhiOGU2MDE3ZGRhN2JhIiwidXNlcl9pZCI6MjJ9.9V0728aS09EKWG1yKZvHm6hU14Zv-wKZj9k9OUUcUVk
+=======
+@adminToken =
+@storeOwnerToken =
+@regularUserToken =
+@testUserToken =
+>>>>>>> 65956c2 (Filtering Added)
+###? Obtain JWT Token (Login)
+#!Customer
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "password": "password123"
+}
+
+
+###! Store Owner
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "lucas_perez",
+  "password": "password123"
+}
+###!ADMIN
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "alice_johnson",
+  "password": "password123"
+}
+
+
+###! 1. Admin Operations
+
+###? Get all products as admin
+GET {{baseUrl}}/products/
+Authorization: Bearer {{adminToken}}
+
+###? Get all Stores as admin
+GET {{baseUrl}}/stores/
+Authorization: Bearer {{adminToken}}
+
+
+###? Get all User Only Admin
+GET {{baseUrl}}/accounts/users
+Authorization: Bearer {{adminToken}}
+
+###? Create a product as admin (auto-approved)
+
+POST {{baseUrl}}/products/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "Admin Test Product 01",
+    "description": "Admin Test Product Description",
+    "price": 9.99,
+    "stock": 1,
+    "brand_id": 2,
+    "category_ids": [3, 2],
+    "store_id": 2
+}
+
+###? Create a product as Store Owner
+
+POST {{baseUrl}}/products/
+Authorization: Bearer {{storeOwnerToken}}
+Content-Type: application/json
+
+{
+    "name": "storeOwner Test Product 01",
+    "description": "storeOwner Test Product Description",
+    "price": 9.99,
+    "stock": 1,
+    "brand_id": 2,
+    "category_ids": [3, 2],
+    "store_id": 2
+}
+
+###? Create a Store as Store Owner
+
+POST {{baseUrl}}/stores/
+Authorization: Bearer {{storeOwnerToken}}
+Content-Type: application/json
+
+{
+    "name": "storeOwner Test Product 01",
+    "description": "storeOwner Test Product Description",
+    "price": 9.99,
+    "stock": 1,
+    "brand_id": 2,
+    "category_ids": [3, 2],
+    "store_id": 2
+}
+
+###? Create a brands as admin
+
+POST {{baseUrl}}/brands/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "admin brand"
+
+}
+
+
+###? Create a category as admin
+POST {{baseUrl}}/categories/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "name": "admin categories"
+
+}
+
+
+###? Update a product as admin (auto-approved)
+
+PUT {{baseUrl}}/products/10/
+Authorization: Bearer {{storeOwnerToken}}
+Content-Type: application/json
+
+{
+    "name": "updayed00 ",
+    "description": "A test product description",
+    "price": 9.25,
+    "stock": 1,
+    "brand_id": 3,
+    "category_ids": [2],
+    "store_id": 2
+}
+
+###? Get Product by ID
+GET {{baseUrl}}/products/20/
+
+###?? A review as Customer
+POST {{baseUrl}}/products/20/add_review/
+Authorization: Bearer {{regularUserToken}}
+Content-Type: application/json
+
+{
+    "rating": 2,
+    "comment": "Excellent product, highly recommended!"
+}
+
+
+###? Add Product to Cart (replace <product_id> with actual ID)
+POST {{baseUrl}}/cart/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+    "product": 1,
+    "quantity": 2
+}
+
+###? Add Same Product Again (quantity should increase to 4)
+POST {{baseUrl}}/cart/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+    "product": 1,
+    "quantity":1
+}
+###? Add Same Product Again (quantity should increase to 4)
+POST {{baseUrl}}/cart/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+    "product": 10,
+    "quantity":1
+}
+
+
+###? Update the quantity
+PUT {{baseUrl}}/cart/68/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+{
+
+    "quantity": 4
+}
+###? Add Different Product
+POST {{baseUrl}}/cart/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+    "product": 2,
+    "quantity": 5
+}
+
+###? Get Cart Contents
+GET {{baseUrl}}/cart/
+Authorization: Bearer {{regularUserToken}}
+
+###? Remove Cart Item (replace <item_id> with actual ID)
+DELETE {{baseUrl}}/cart/66/
+Authorization: Bearer {{regularUserToken}}
+
+
+
+###? Create Order from Cart
+POST {{baseUrl}}/orders/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+
+{
+    "from_cart": true
+}
+
+
+###? Create Direct Order
+POST {{baseUrl}}/orders/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+    "product_id": 12,
+    "quantity": 2
+}
+
+
+###? Get Orders List
+GET {{baseUrl}}/orders/
+Authorization: Bearer {{regularUserToken}}
+
+
+
+
+
+
+
+###?  Get all stores (admins)
+GET {{baseUrl}}/stores/
+Authorization: Bearer {{adminToken}}
+
+
+###? Get my stores (store owners)
+GET {{baseUrl}}/stores/
+Authorization: Bearer {{storeOwnerToken}}
+
+###? Create a new store
+POST {{baseUrl}}/stores/
+Authorization: Bearer {{storeOwnerToken}}
+Content-Type: application/json
+
+{
+    "name": "0001 oliver_garcia ",
+    "address": "123 Main oliver_garcia",
+    "location": "City oliver_garcia",
+    "category_ids": [1,3,2,5]
+}
+
+###? Get specific store
+GET {{baseUrl}}/stores/1/
+Authorization: Bearer {{storeOwnerToken}}
+
+###? Get My Stores Products
+GET {{baseUrl}}/stores/
+Authorization: Bearer {{storeOwnerToken}}
+
+###? Update store
+PUT {{baseUrl}}/stores/6/
+Authorization: Bearer {{storeOwnerToken}}
+Content-Type: application/json
+
+{
+    "name": "Updated lucas perez Store",
+    "address": "456 New Address",
+    "location": "New Location",
+    "category_ids": [1, 2]
+}
+
+###! Delete store
+DELETE {{baseUrl}}/stores/7/
+Authorization: Bearer {{storeOwnerToken}}
+
+###? Get store products
+GET {{baseUrl}}/stores/3/products/
+Authorization: Bearer {{storeOwnerToken}}
+
+###? Get store orders
+GET {{baseUrl}}/stores/1/orders/
+Authorization: Bearer {{storeOwnerToken}}
+
+###? Get store orders
+GET {{baseUrl}}/stores/orders
+Authorization: Bearer {{storeOwnerToken}}
+
+
+###? Change order status (store owner)
+PATCH {{baseUrl}}/orders/1ad1f9c6-4fc2-4dfd-9401-0e48373e64e1/update_status/
+Content-Type: application/json
+Authorization: Bearer {{storeOwnerToken}}
+
+{
+    "status": "Cancelled"
+}
+
+
+###? Change order status (Admin)
+PATCH {{baseUrl}}/orders/e5883977-b860-403c-9b7f-83636938bb06/update_status/
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "status": "Cancelled"
+}
+
+###!.............................. Accounts EndsPoits .......................
+
+###? Create Account
+POST  {{baseUrl}}/accounts/users/
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "testpassword123",
+    "phone_number": "1234567890",
+    "address": "123 Test St",
+    "profile_picture": null,
+    "role": "customer"
+}
+
+
+###!Get Token
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "testpassword123"
+}
+
+
+
+###? Get Own Account Data
+GET  {{baseUrl}}/accounts/users/me/
+Authorization: Bearer {{testUserToken}}
+
+###? Update Profile
+PATCH  {{baseUrl}}/accounts/users/me/
+Authorization: Bearer {{testUserToken}}
+Content-Type: application/json
+
+{
+    "first_name":"sa",
+    "last_name":"ika",
+    "email": "testuser@testuser.com",
+    "phone_number": "0987654321",
+    "address": "456 Updated St"
+}
+
+###? Change Password
+POST  {{baseUrl}}/accounts/users/change_password/
+Authorization: Bearer {{regularUserToken}}
+Content-Type: application/json
+
+{
+    "old_password": "testpassword123",
+    "new_password": "testpassword12",
+    "confirm_password": "testpassword12"
+}
+
+###? Admin Delete Account
+DELETE {{baseUrl}}/accounts/users/21/
+Authorization: Bearer {{adminToken}}
+
+
+###! Logout (use the refresh token received from login)
+POST http://127.0.0.1:8000/api/logout/
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+<<<<<<< HEAD
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczODc3NTI1MCwiaWF0IjoxNzM4MTcwNDUwLCJqdGkiOiI3YTY4ZDViODFlOGU0ZDI4ODgzMGJlYjQ3M2UwMDc2YyIsInVzZXJfaWQiOjF9.GWYqppw-hF2NqowH4LMig2VPHqPoBvdrbat1xpYp4aQ"
+=======
+  "refresh":
+>>>>>>> 65956c2 (Filtering Added)
+}
+
+####
+GET  http://127.0.0.1:8000/api/products
+
+
+###
+GET  {{baseUrl}}/accounts/users/me/
+<<<<<<< HEAD
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxMTk2MzgzLCJpYXQiOjE3Mzg2MDQzODMsImp0aSI6ImVjMjAwN2IwOGUwYjRlMTNhNDVkY2UzOWI3NmQzYzQwIiwidXNlcl9pZCI6M30.L_rB5efMV71OG4f6lfYALdkc3tScAL6fYDOqPHajWb4
+
+###
+GET  {{baseUrl}}/accounts/users/me/
+=======
+>>>>>>> 65956c2 (Filtering Added)
+Authorization: Bearer {{regularUserToken}}
+
+
+###!ADMIN
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "alice_johnson",
+  "password": "password123"
+}
+###! Logout (use the refresh token received from login)
+POST http://127.0.0.1:8000/api/logout/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+{
+<<<<<<< HEAD
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0Mzc4ODM4MywiaWF0IjoxNzM4NjA0MzgzLCJqdGkiOiI5MGQ4MWEzOWQzYjQ0NzIzOWVmM2Q3MzdmZjhhMjg3YiIsInVzZXJfaWQiOjN9.5PaHqB6V_4jCIIA5FP_o3xVvospURminChxTqcdSj4Y"
+=======
+  "refresh":
+>>>>>>> 65956c2 (Filtering Added)
+}
+
+
+###
+GET {{baseUrl}}/stores/products_all/
+Authorization:Bearer {{storeOwnerToken}}
+
+###
+GET {{baseUrl}}/products/?page_size=all
+
+
+
+
+<<<<<<< HEAD
+# rm db.sqlite3
+# find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+# find . -path "*/migrations/*.pyc" -delete
+# djmm
+# djm
+# py manage.py populate_db
+# djs
+=======
+>>>>>>> 65956c2 (Filtering Added)
