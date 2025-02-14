@@ -1,11 +1,21 @@
 {
     "version": 2,
-    "builds": [{
-        "src": "shopzone_backend/wsgi.py",
-        "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb" }
-    }],
+    "builds": [
+        {
+            "src": "shopzone_backend/wsgi.py",
+            "use": "@vercel/python",
+            "config": { "maxLambdaSize": "15mb" }
+        },
+        {
+            "src": "staticfiles/**",
+            "use": "@vercel/static"
+        }
+    ],
     "routes": [
+        {
+            "src": "/static/(.*)",
+            "dest": "/staticfiles/$1"
+        },
         {
             "src": "/api/(.*)",
             "headers": {
