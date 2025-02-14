@@ -12,7 +12,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
-    "shopzone-backend-beta.vercel.app",
+    "shopzone-backend-gilt.vercel.app",
     ".vercel.app",
     "127.0.0.1",
     ".now.sh",

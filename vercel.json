@@ -1,7 +1,7 @@
 {
     "version": 2,
     "builds": [{
-        "src": "shopzone/wsgi.py",
+        "src": "shopzone_backend/wsgi.py",
         "use": "@vercel/python",
         "config": { "maxLambdaSize": "15mb" }
     }],
@@ -14,11 +14,11 @@
                 "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
                 "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
             },
-            "dest": "shopzone/wsgi.py"
+            "dest": "shopzone_backend/wsgi.py"
         },
         {
             "src": "/(.*)",
-            "dest": "shopzone/wsgi.py"
+            "dest": "shopzone_backend/wsgi.py"
         }
     ]
 }
