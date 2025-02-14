@@ -402,14 +402,9 @@ GET  http://127.0.0.1:8000/api/products
 
 
 ###
-GET  {{baseUrl}}/accounts/users/me/
-<<<<<<< HEAD
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxMTk2MzgzLCJpYXQiOjE3Mzg2MDQzODMsImp0aSI6ImVjMjAwN2IwOGUwYjRlMTNhNDVkY2UzOWI3NmQzYzQwIiwidXNlcl9pZCI6M30.L_rB5efMV71OG4f6lfYALdkc3tScAL6fYDOqPHajWb4
-
 ###
 GET  {{baseUrl}}/accounts/users/me/
-=======
->>>>>>> 65956c2 (Filtering Added)
+
 Authorization: Bearer {{regularUserToken}}
 
 
@@ -426,11 +421,8 @@ POST http://127.0.0.1:8000/api/logout/
 Content-Type: application/json
 Authorization: Bearer {{regularUserToken}}
 {
-<<<<<<< HEAD
-  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0Mzc4ODM4MywiaWF0IjoxNzM4NjA0MzgzLCJqdGkiOiI5MGQ4MWEzOWQzYjQ0NzIzOWVmM2Q3MzdmZjhhMjg3YiIsInVzZXJfaWQiOjN9.5PaHqB6V_4jCIIA5FP_o3xVvospURminChxTqcdSj4Y"
-=======
+
   "refresh":
->>>>>>> 65956c2 (Filtering Added)
 }
 
 
@@ -444,13 +436,3 @@ GET {{baseUrl}}/products/?page_size=all
 
 
 
-<<<<<<< HEAD
-# rm db.sqlite3
-# find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
-# find . -path "*/migrations/*.pyc" -delete
-# djmm
-# djm
-# py manage.py populate_db
-# djs
-=======
->>>>>>> 65956c2 (Filtering Added)

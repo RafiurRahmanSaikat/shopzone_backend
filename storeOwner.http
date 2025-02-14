@@ -1,10 +1,7 @@
 ###? Variables
 @baseUrl = http://localhost:8000/api
-<<<<<<< HEAD
-@storeOwnerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxNjE4MzU2LCJpYXQiOjE3MzkwMjYzNTYsImp0aSI6IjUzMTQxMzMyMDI0OTRjOTg4ZDVjNWFjN2VkNzZjZTg3IiwidXNlcl9pZCI6NX0.Ts61xL45WGqsJHf-gkfRmiqRTnf8EYJ-M3Kjx9U2JEc
-=======
+
 @storeOwnerToken =
->>>>>>> 65956c2 (Filtering Added)
 
 
 ###! Store Owner

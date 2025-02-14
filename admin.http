@@ -1,10 +1,8 @@
 ###? Variables
 @baseUrl = http://localhost:8000/api
-<<<<<<< HEAD
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxMTk1NjU5LCJpYXQiOjE3Mzg2MDM2NTksImp0aSI6IjM3OTNlNDkwODQxMjRjOWFhZDdhMGQ1MTY4YTRlZWQ4IiwidXNlcl9pZCI6M30.N3mbgQPHyH1HcNPAFDTtBSxT2QOolFilICL3BrTgmCU
-=======
+
 @adminToken =
->>>>>>> 65956c2 (Filtering Added)
+
 
 ###!ADMIN
 POST {{baseUrl}}/token/

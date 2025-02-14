@@ -123,23 +123,10 @@ DATABASES = {
         "PORT": config("DB_PORT"),
         "OPTIONS": {
             "sslmode": "require",
-            "connect_timeout": 10,
-            "keepalives": 1,
-            "keepalives_idle": 30,
-            "keepalives_interval": 10,
-            "keepalives_count": 5,
         },
-        "CONN_MAX_AGE": 0,
     }
 }
-# Cache settings
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "unique-snowflake",
-        "TIMEOUT": 300,
-    }
-}
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -192,42 +179,6 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_PAGINATION_CLASS": "core.pagination.CustomPageNumberPagination",
     "PAGE_SIZE": 10,
-    # Add these settings
-    "DEFAULT_THROTTLE_CLASSES": [
-        "rest_framework.throttling.AnonRateThrottle",
-        "rest_framework.throttling.UserRateThrottle",
-    ],
-    "DEFAULT_THROTTLE_RATES": {"anon": "100/minute", "user": "1000/minute"},
-    "DEFAULT_TIMEOUT": 30,
-}
-# Logging configuration
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "{levelname} {asctime} {module} {message}",
-            "style": "{",
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "ERROR",
-            "propagate": True,
-        },
-        "django.db.backends": {
-            "handlers": ["console"],
-            "level": "ERROR",
-            "propagate": False,
-        },
-    },
 }
 
 SPECTACULAR_SETTINGS = {
