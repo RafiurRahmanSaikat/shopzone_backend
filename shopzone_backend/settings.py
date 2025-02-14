@@ -9,7 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -38,7 +39,6 @@ INSTALLED_APPS = [
     "product",
     "store",
     "order",
-    "silk",
     "drf_spectacular",
     "django_filters",
 ]
@@ -52,7 +52,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "silk.middleware.SilkyMiddleware",
     "django.middleware.common.CommonMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
@@ -124,13 +123,23 @@ DATABASES = {
         "PORT": config("DB_PORT"),
         "OPTIONS": {
             "sslmode": "require",
-            "connect_timeout": 5,
+            "connect_timeout": 10,
+            "keepalives": 1,
+            "keepalives_idle": 30,
+            "keepalives_interval": 10,
+            "keepalives_count": 5,
         },
         "CONN_MAX_AGE": 0,
     }
 }
-
-
+# Cache settings
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
+        "TIMEOUT": 300,
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -183,6 +192,42 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_PAGINATION_CLASS": "core.pagination.CustomPageNumberPagination",
     "PAGE_SIZE": 10,
+    # Add these settings
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {"anon": "100/minute", "user": "1000/minute"},
+    "DEFAULT_TIMEOUT": 30,
+}
+# Logging configuration
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": True,
+        },
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
 }
 
 SPECTACULAR_SETTINGS = {
@@ -202,9 +247,5 @@ SIMPLE_JWT = {
 
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
-SILKY_MAX_RECORDED_REQUESTS = 10
-SILKY_MAX_RECORDED_REQUESTS_CHECK_PERCENT = 10
-SILKY_PYTHON_PROFILER = False
-SILKY_PYTHON_PROFILER_BINARY = False
-SILKY_ANALYZE_QUERIES = False
+
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
