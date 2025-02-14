@@ -60,7 +60,5 @@ htmlcov/
 *.swp
 *.swo
 
-# Silk profiling
-silk/
 
 shopzone/devsettings.py
