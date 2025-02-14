@@ -1,5 +1,5 @@
-from datetime import timedelta
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from corsheaders.defaults import default_headers
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "silk.middleware.SilkyMiddleware",
     "django.middleware.common.CommonMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
@@ -166,8 +166,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -202,5 +202,9 @@ SIMPLE_JWT = {
 
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+SILKY_MAX_RECORDED_REQUESTS = 10
+SILKY_MAX_RECORDED_REQUESTS_CHECK_PERCENT = 10
+SILKY_PYTHON_PROFILER = False
+SILKY_PYTHON_PROFILER_BINARY = False
+SILKY_ANALYZE_QUERIES = False
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
