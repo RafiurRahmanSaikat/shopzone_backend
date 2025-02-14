@@ -20,7 +20,7 @@ db.sqlite3
 logs/
 
 # Static and media files
-staticfiles/
+
 media/
 *.mp4
 *.jpg
