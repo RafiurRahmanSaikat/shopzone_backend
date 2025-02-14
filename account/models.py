@@ -16,10 +16,6 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=15)
     address = models.TextField()
     profile_picture = models.TextField(blank=True, null=True)
-<<<<<<< HEAD
-    # profile_picture = models.ImageField(upload_to="profiles/", blank=True, null=True)
-=======
->>>>>>> 65956c2 (Filtering Added)
 
     class Meta:
         indexes = [

@@ -4,10 +4,6 @@ from rest_framework import serializers
 
 User = get_user_model()
 from django.contrib.auth.hashers import make_password
-<<<<<<< HEAD
-from order.serializers import CartSerializer, OrderSerializer
-=======
->>>>>>> 65956c2 (Filtering Added)
 from rest_framework import serializers
 
 
@@ -28,23 +24,6 @@ class UserSerializer(serializers.ModelSerializer):
             "is_authenticated",
         )
 
-<<<<<<< HEAD
-    # def to_representation(self, instance):
-    #     data = super().to_representation(instance)
-    #     if self.context.get("include_related"):
-    #         data["orders"] = OrderSerializer(
-    #             instance.orders.select_related("user").prefetch_related(
-    #                 "order_products__product"
-    #             ),
-    #             many=True,
-    #         ).data
-    #         data["cart"] = CartSerializer(
-    #             instance.cart.prefetch_related("cart_items__product")
-    #         ).data
-    #     return data
-
-=======
->>>>>>> 65956c2 (Filtering Added)
 
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,11 +31,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "username",
-<<<<<<< HEAD
-=======
             "first_name",
             "last_name",
->>>>>>> 65956c2 (Filtering Added)
             "email",
             "password",
             "phone_number",
