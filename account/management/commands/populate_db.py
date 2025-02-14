@@ -3,6 +3,7 @@ from random import choice, randint, sample
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+
 from order.models import Cart, CartItem, Order, OrderProduct
 from product.models import Brand, Category, Product, Review
 from store.models import Store, StoreCategory
@@ -23,190 +24,133 @@ class Command(BaseCommand):
                 "last_name": "Doe",
                 "email": "john.doe@example.com",
                 "username": "john_doe",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Tommy",
                 "last_name": "Smith",
                 "email": "tommy.smith@example.com",
                 "username": "tommy_smith",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Alice",
                 "last_name": "Johnson",
                 "email": "alice.johnson@example.com",
                 "username": "alice_johnson",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Bob",
                 "last_name": "Williams",
                 "email": "bob.williams@example.com",
                 "username": "bob_williams",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Emma",
                 "last_name": "Brown",
                 "email": "emma.brown@example.com",
                 "username": "emma_brown",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Sophia",
                 "last_name": "Davis",
                 "email": "sophia.davis@example.com",
                 "username": "sophia_davis",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "James",
                 "last_name": "Miller",
                 "email": "james.miller@example.com",
                 "username": "james_miller",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Oliver",
                 "last_name": "Garcia",
                 "email": "oliver.garcia@example.com",
                 "username": "oliver_garcia",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Mia",
                 "last_name": "Martinez",
                 "email": "mia.martinez@example.com",
                 "username": "mia_martinez",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Liam",
                 "last_name": "Rodriguez",
                 "email": "liam.rodriguez@example.com",
                 "username": "liam_rodriguez",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Lucas",
                 "last_name": "Perez",
                 "email": "lucas.perez@example.com",
                 "username": "lucas_perez",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Isabella",
                 "last_name": "Hernandez",
                 "email": "isabella.hernandez@example.com",
                 "username": "isabella_hernandez",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Amelia",
                 "last_name": "Lopez",
                 "email": "amelia.lopez@example.com",
                 "username": "amelia_lopez",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Ethan",
                 "last_name": "Gonzalez",
                 "email": "ethan.gonzalez@example.com",
                 "username": "ethan_gonzalez",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Charlotte",
                 "last_name": "Wilson",
                 "email": "charlotte.wilson@example.com",
                 "username": "charlotte_wilson",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Aiden",
                 "last_name": "Anderson",
                 "email": "aiden.anderson@example.com",
                 "username": "aiden_anderson",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Scarlett",
                 "last_name": "Thomas",
                 "email": "scarlett.thomas@example.com",
                 "username": "scarlett_thomas",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Jackson",
                 "last_name": "Taylor",
                 "email": "jackson.taylor@example.com",
                 "username": "jackson_taylor",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
             {
                 "first_name": "Victoria",
                 "last_name": "Moore",
                 "email": "victoria.moore@example.com",
                 "username": "victoria_moore",
-<<<<<<< HEAD
-=======
                 "profile_picture": "https://ibb.co.com/svSFcwJV",
->>>>>>> 65956c2 (Filtering Added)
             },
         ]
         roles = ["customer", "store_owner", "admin"]
@@ -216,10 +160,7 @@ class Command(BaseCommand):
                 first_name=user_data["first_name"],
                 last_name=user_data["last_name"],
                 username=user_data["username"],
-<<<<<<< HEAD
-=======
                 profile_picture=user_data["profile_picture"],
->>>>>>> 65956c2 (Filtering Added)
                 email=user_data["email"],
                 password="password123",
                 phone_number=f"555-010{index+1}",
