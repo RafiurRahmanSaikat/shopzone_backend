@@ -1,10 +1,10 @@
 ###? Variables
 @baseUrl = http://localhost:8000/api
 <<<<<<< HEAD
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxMTk1NjU5LCJpYXQiOjE3Mzg2MDM2NTksImp0aSI6IjM3OTNlNDkwODQxMjRjOWFhZDdhMGQ1MTY4YTRlZWQ4IiwidXNlcl9pZCI6M30.N3mbgQPHyH1HcNPAFDTtBSxT2QOolFilICL3BrTgmCU
-@storeOwnerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxNjE4MDE0LCJpYXQiOjE3MzkwMjYwMTQsImp0aSI6IjI5ZmZhN2Q4ZjY2NzQyOTFiYjU5YTRkNTNhYTJkNDQwIiwidXNlcl9pZCI6NX0.8hV956_GLxv41Uc_cOir5brEb2HQV_2xmqfm0DWNlD8
-@regularUserToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQxMzU3NTQ2LCJpYXQiOjE3Mzg3NjU1NDYsImp0aSI6ImIzMTJmYTE3YjUxMDRhMmM4MzM3MjE2ODU0ZDFiMjRjIiwidXNlcl9pZCI6MX0.0HXd8lIKgi_GA3ynEXSikEaOnOEA15pyiarsbYG8NB8
-@testUserToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjI3MTc0LCJpYXQiOjE3MzgxNDA3NzQsImp0aSI6IjI0NmQ4MDE4M2QzMjRiNTc4YjhiOGU2MDE3ZGRhN2JhIiwidXNlcl9pZCI6MjJ9.9V0728aS09EKWG1yKZvHm6hU14Zv-wKZj9k9OUUcUVk
+@adminToken = 
+@storeOwnerToken = 
+@regularUserToken = 
+@testUserToken =
 =======
 @adminToken =
 @storeOwnerToken =
@@ -391,7 +391,7 @@ Authorization: Bearer {{adminToken}}
 
 {
 <<<<<<< HEAD
-  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczODc3NTI1MCwiaWF0IjoxNzM4MTcwNDUwLCJqdGkiOiI3YTY4ZDViODFlOGU0ZDI4ODgzMGJlYjQ3M2UwMDc2YyIsInVzZXJfaWQiOjF9.GWYqppw-hF2NqowH4LMig2VPHqPoBvdrbat1xpYp4aQ"
+ 
 =======
   "refresh":
 >>>>>>> 65956c2 (Filtering Added)
