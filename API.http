@@ -1,0 +1,432 @@
+###############################################################
+#                       API REQUESTS                          #
+###############################################################
+
+###? Variables
+@baseUrl = http://localhost:8000/api
+@adminToken =
+@storeOwnerToken =
+@regularUserToken =
+@testUserToken =
+
+###############################################################
+#                       AUTHENTICATION                         #
+###############################################################
+
+###! [001] Login as Customer
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "password": "password123"
+}
+
+###! [002] Login as Store Owner
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "lucas_perez",
+  "password": "password123"
+}
+
+###! [003] Login as Emma Brown (Store Owner)
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "emma_brown",
+  "password": "password123"
+}
+
+###! [004] Login as Admin
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "alice_johnson",
+  "password": "password123"
+}
+
+###! [005] Logout (Requires refresh token)
+POST {{baseUrl}}/logout/
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "refresh": "your_refresh_token_here"
+}
+
+###############################################################
+#                     USER ACCOUNT OPERATIONS                 #
+###############################################################
+
+###! [006] Create New User Account
+POST {{baseUrl}}/accounts/users/
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "testpassword123",
+  "phone_number": "1234567890",
+  "address": "123 Test St",
+  "profile_picture": null,
+  "role": "customer"
+}
+
+###! [007] Get My Account Information
+GET {{baseUrl}}/accounts/users/me/
+Authorization: Bearer {{testUserToken}}
+
+###! [008] Update My Profile
+PATCH {{baseUrl}}/accounts/users/me/
+Authorization: Bearer {{testUserToken}}
+Content-Type: application/json
+
+{
+  "first_name": "sa",
+  "last_name": "ika",
+  "email": "testuser@testuser.com",
+  "phone_number": "0987654321",
+  "address": "456 Updated St"
+}
+
+###! [009] Change Password
+POST {{baseUrl}}/accounts/users/change_password/
+Authorization: Bearer {{regularUserToken}}
+Content-Type: application/json
+
+{
+  "old_password": "testpassword123",
+  "new_password": "testpassword12",
+  "confirm_password": "testpassword12"
+}
+
+###! [010] Admin: Get All Users
+GET {{baseUrl}}/accounts/users
+Authorization: Bearer {{adminToken}}
+
+###! [011] Admin: Delete User Account
+DELETE {{baseUrl}}/accounts/users/21/
+Authorization: Bearer {{adminToken}}
+
+###############################################################
+#                      CUSTOMER OPERATIONS                    #
+###############################################################
+
+###! [012] Get Product by ID
+GET {{baseUrl}}/products/20/
+
+###! [013] Add Product Review
+POST {{baseUrl}}/products/20/add_review/
+Authorization: Bearer {{regularUserToken}}
+Content-Type: application/json
+
+{
+  "rating": 2,
+  "comment": "Excellent product, highly recommended!"
+}
+
+###! [014] Add Product to Cart
+POST {{baseUrl}}/cart/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+  "product": 1,
+  "quantity": 2
+}
+
+###! [015] Add Same Product Again (Updates Quantity)
+POST {{baseUrl}}/cart/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+  "product": 1,
+  "quantity": 1
+}
+
+###! [016] Add Different Product to Cart
+POST {{baseUrl}}/cart/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+  "product": 10,
+  "quantity": 1
+}
+
+###! [017] Update Cart Item Quantity
+PUT {{baseUrl}}/cart/68/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+  "quantity": 4
+}
+
+###! [018] Get Cart Contents
+GET {{baseUrl}}/cart/
+Authorization: Bearer {{regularUserToken}}
+
+###! [019] Remove Item from Cart
+DELETE {{baseUrl}}/cart/66/
+Authorization: Bearer {{regularUserToken}}
+
+###! [020] Create Order from Cart
+POST {{baseUrl}}/orders/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+  "from_cart": true
+}
+
+###! [021] Create Direct Order
+POST {{baseUrl}}/orders/
+Content-Type: application/json
+Authorization: Bearer {{regularUserToken}}
+
+{
+  "product_id": 12,
+  "quantity": 2
+}
+
+###! [022] Get My Orders
+GET {{baseUrl}}/orders/
+Authorization: Bearer {{regularUserToken}}
+
+###############################################################
+#                   STORE OWNER OPERATIONS                    #
+###############################################################
+
+###! [023] Get My Stores
+GET {{baseUrl}}/stores/
+Authorization: Bearer {{storeOwnerToken}}
+
+###! [024] Create New Store
+POST {{baseUrl}}/stores/
+Authorization: Bearer {{storeOwnerToken}}
+Content-Type: application/json
+
+{
+  "name": "002 emma_brown Test Store",
+  "address": "123 Main St",
+  "location": "City of emma_brown",
+  "category_ids": [1, 3, 2, 5]
+}
+
+###! [025] Get Specific Store
+GET {{baseUrl}}/stores/3/
+Authorization: Bearer {{storeOwnerToken}}
+
+###! [026] Update Store
+PUT {{baseUrl}}/stores/3/
+Authorization: Bearer {{storeOwnerToken}}
+Content-Type: application/json
+
+{
+  "name": "Updated Store Name",
+  "address": "456 New Address",
+  "location": "New Location",
+  "category_ids": [1, 2]
+}
+
+###! [027] Delete Store
+DELETE {{baseUrl}}/stores/6/
+Authorization: Bearer {{storeOwnerToken}}
+
+###! [028] Create Product
+POST {{baseUrl}}/products/
+Authorization: Bearer {{storeOwnerToken}}
+Content-Type: application/json
+
+{
+  "name": "Store Owner Test Product 01 to store 4",
+  "description": "Store Owner Test Product 01 to store num 6",
+  "price": 9.99,
+  "stock": 1,
+  "brand_id": 2,
+  "category_ids": [3, 2],
+  "store_id": 4
+}
+
+###! [029] Update Product
+PUT {{baseUrl}}/products/38/
+Authorization: Bearer {{storeOwnerToken}}
+Content-Type: application/json
+
+{
+  "name": "S00",
+  "description": "Store Owner Test Product 01 to store num 6",
+  "price": 9.99,
+  "stock": 1,
+  "brand_id": 2,
+  "category_ids": [3, 2],
+  "store_id": 4
+}
+
+###! [030] Get Product Details
+GET {{baseUrl}}/products/38/
+Authorization: Bearer {{storeOwnerToken}}
+
+###! [031] Delete Product
+DELETE {{baseUrl}}/products/38/
+Authorization: Bearer {{storeOwnerToken}}
+
+###! [032] Get My Products
+GET {{baseUrl}}/products/my_products?page=1
+Authorization: Bearer {{storeOwnerToken}}
+
+###! [033] Get Store Orders
+GET {{baseUrl}}/orders
+Authorization: Bearer {{storeOwnerToken}}
+
+###! [034] Update Order Status
+PATCH {{baseUrl}}/orders/1ad1f9c6-4fc2-4dfd-9401-0e48373e64e1/update_status/
+Content-Type: application/json
+Authorization: Bearer {{storeOwnerToken}}
+
+{
+  "status": "Cancelled"
+}
+
+###############################################################
+#                     ADMIN OPERATIONS                        #
+###############################################################
+
+###! [035] Get All Products
+GET {{baseUrl}}/products/
+Authorization: Bearer {{adminToken}}
+
+###! [036] Get Products with Pagination
+GET {{baseUrl}}/products/?page_size=all
+
+###! [037] Get All Stores
+GET {{baseUrl}}/stores/
+Authorization: Bearer {{adminToken}}
+
+###! [038] Create Product
+POST {{baseUrl}}/products/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Admin Test Product 01",
+  "description": "Admin Test Product Description",
+  "price": 9.99,
+  "stock": 1,
+  "brand_id": 2,
+  "image": null,
+  "category_ids": [3, 2],
+  "store_id": 2
+}
+
+###! [039] Update Product
+PUT {{baseUrl}}/products/11/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "updayed00 ",
+  "description": "A test product description",
+  "price": 9.25,
+  "stock": 1,
+  "image": null,
+  "brand_id": 3,
+  "category_ids": [2],
+  "store_id": 2
+}
+
+###! [040] Create Store
+POST {{baseUrl}}/stores/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Admin Store",
+  "address": "456 New Address",
+  "location": "New Location",
+  "category_ids": [1, 2]
+}
+
+###! [041] Update Store
+PATCH {{baseUrl}}/stores/6/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Admin Store 6",
+  "address": "456 New Address",
+  "location": "New Location",
+  "category_ids": [1, 2]
+}
+
+###! [042] Create Brand
+POST {{baseUrl}}/brands/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "admin brand"
+}
+
+###! [043] Create Category
+POST {{baseUrl}}/categories/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "admin categories"
+}
+
+###! [044] Get Store Categories
+GET {{baseUrl}}/stores/storeCategory
+Authorization: Bearer {{adminToken}}
+
+###! [045] Create Store Category
+POST {{baseUrl}}/stores/storeCategory
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Books"
+}
+
+###! [046] Update Store Category
+PUT {{baseUrl}}/stores/storeCategory/6/
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "HAHAH"
+}
+
+###! [047] Delete Store Category
+DELETE {{baseUrl}}/stores/storeCategory/7/
+Authorization: Bearer {{adminToken}}
+
+###! [048] Update Order Status
+PATCH {{baseUrl}}/orders/e5883977-b860-403c-9b7f-83636938bb06/update_status/
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "status": "Cancelled"
+}
+
+###############################################################
+#                        HELPER COMMANDS                      #
+###############################################################
+
+# Database reset commands:
+# rm db.sqlite3
+# find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+# find . -path "*/migrations/*.pyc" -delete
+# djmm
+# djm
+# py manage.py populate_db
+# djs

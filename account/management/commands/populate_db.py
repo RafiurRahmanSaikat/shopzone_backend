@@ -3,7 +3,6 @@ from random import choice, randint, sample
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
-
 from order.models import Cart, CartItem, Order, OrderProduct
 from product.models import Brand, Category, Product, Review
 from store.models import Store, StoreCategory
@@ -156,17 +155,21 @@ class Command(BaseCommand):
         roles = ["customer", "store_owner", "admin"]
         users = []
         for index, user_data in enumerate(users_data):
-            user = User.objects.create_user(
-                first_name=user_data["first_name"],
-                last_name=user_data["last_name"],
+            user, created = User.objects.get_or_create(
                 username=user_data["username"],
-                profile_picture=user_data["profile_picture"],
-                email=user_data["email"],
-                password="password123",
-                phone_number=f"555-010{index+1}",
-                address=f"{index+1} Main St, City, Country",
-                role=roles[index % len(roles)],
+                defaults={
+                    "first_name": user_data["first_name"],
+                    "last_name": user_data["last_name"],
+                    "email": user_data["email"],
+                    "profile_picture": user_data["profile_picture"],
+                    "phone_number": f"555-010{index+1}",
+                    "address": f"{index+1} Main St, City, Country",
+                    "role": roles[index % len(roles)],
+                },
             )
+            if created:
+                user.set_password("password123")
+                user.save()
             users.append(user)
         self.stdout.write(self.style.SUCCESS(f"Created {len(users)} users"))
 
@@ -175,29 +178,32 @@ class Command(BaseCommand):
         # ---------------------
         store_categories = ["Electronics", "Fashion", "Groceries", "Books", "Furniture"]
         store_category_objs = [
-            StoreCategory.objects.create(name=category) for category in store_categories
+            StoreCategory.objects.get_or_create(name=category)[0]
+            for category in store_categories
         ]
         self.stdout.write(
             self.style.SUCCESS(f"Created {len(store_category_objs)} store categories")
         )
 
         # ---------------------
-        # 3. Create Stores
+        # 3. Create Stores (exactly 5)
         # ---------------------
         stores = []
         store_owners = [user for user in users if user.role == "store_owner"]
         for index in range(5):
-            if store_owners:
-                store_owner = choice(store_owners)
-                store = Store.objects.create(
-                    name=f"BestBuy {index+1}",
-                    address=f"{index+1} Shop Ave, City, Country",
-                    location=f"City {index+1}",
-                    owner=store_owner,
-                )
-                store_owners.remove(store_owner)
-                stores.append(store)
+            # Use a store owner (if available) based on index.
+            owner = store_owners[index % len(store_owners)] if store_owners else None
+            store, created = Store.objects.get_or_create(
+                name=f"BestBuy {index+1}",
+                defaults={
+                    "address": f"{index+1} Shop Ave, City, Country",
+                    "location": f"City {index+1}",
+                    "owner": owner,
+                },
+            )
+            stores.append(store)
 
+        # Add store categories to each store.
         for store in stores:
             store.store_categories.add(*sample(store_category_objs, k=2))
         self.stdout.write(self.style.SUCCESS(f"Created {len(stores)} stores"))
@@ -219,7 +225,7 @@ class Command(BaseCommand):
         # 4. Create Brands
         # ---------------------
         brands = ["Apple", "Samsung", "Sony", "LG", "Nike", "Adidas", "Microsoft"]
-        brand_objs = [Brand.objects.create(name=brand) for brand in brands]
+        brand_objs = [Brand.objects.get_or_create(name=brand)[0] for brand in brands]
         self.stdout.write(self.style.SUCCESS(f"Created {len(brand_objs)} brands"))
 
         # ---------------------
@@ -243,7 +249,8 @@ class Command(BaseCommand):
             "Smart Home",
         ]
         category_objs = [
-            Category.objects.create(name=category) for category in product_categories
+            Category.objects.get_or_create(name=category)[0]
+            for category in product_categories
         ]
         self.stdout.write(
             self.style.SUCCESS(f"Created {len(category_objs)} product categories")
@@ -437,7 +444,6 @@ class Command(BaseCommand):
             user for user in users if user.role in ["admin", "customer"]
         ]
         for product in products:
-            # Sample exactly 3 distinct reviewers.
             reviewers = (
                 sample(eligible_reviewers, 3)
                 if len(eligible_reviewers) >= 3
@@ -461,10 +467,9 @@ class Command(BaseCommand):
         order_statuses = ["Confirmed", "Delivered", "Cancelled"]
         orders = []
         for user in [u for u in users if u.role == "customer"]:
-            for _ in range(3):  # 3 orders per customer
+            for _ in range(3):
                 status_choice = choice(order_statuses)
                 order = Order.objects.create(user=user, status=status_choice)
-                # Pick 4 random products (from those created; note: none come from the empty store)
                 if len(products) >= 4:
                     products_sample = sample(products, k=4)
                     for product in products_sample:
@@ -482,7 +487,7 @@ class Command(BaseCommand):
         # 9. Create Carts and CartItems for all users
         # ---------------------
         for user in users:
-            cart = Cart.objects.create(user=user)
+            cart, created = Cart.objects.get_or_create(user=user)
             if products:
                 products_sample = sample(products, k=3)
                 for product in products_sample:
