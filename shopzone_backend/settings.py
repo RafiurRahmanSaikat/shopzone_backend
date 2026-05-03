@@ -4,8 +4,10 @@ from pathlib import Path
 
 from corsheaders.defaults import default_headers
 from decouple import config
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env", override=True)
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
@@ -213,4 +215,3 @@ SIMPLE_JWT = {
 
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
-FRONTEND_URL = config("FRONTEND_URL", default="http://localhost:3000")
