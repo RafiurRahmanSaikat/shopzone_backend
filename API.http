@@ -4,16 +4,27 @@
 
 ###? Variables
 @baseUrl = http://localhost:8000/api
-@adminToken =
-@storeOwnerToken =
-@regularUserToken =
-@testUserToken =
+
+# Variables for storing tokens
+@adminToken = {{login_admin.response.body.access}}
+@storeOwnerToken = {{login_store_owner.response.body.access}}
+@regularUserToken = {{login_customer.response.body.access}}
+@testUserToken = {{login_test_user.response.body.access}}
+@emmaToken = {{login_emma.response.body.access}}
+
+# Variables for storing refresh tokens
+@adminRefreshToken = {{login_admin.response.body.refresh}}
+@storeOwnerRefreshToken = {{login_store_owner.response.body.refresh}}
+@regularUserRefreshToken = {{login_customer.response.body.refresh}}
+@testUserRefreshToken = {{login_test_user.response.body.refresh}}
+@emmaRefreshToken = {{login_emma.response.body.refresh}}
 
 ###############################################################
 #                       AUTHENTICATION                         #
 ###############################################################
 
 ###! [001] Login as Customer
+# @name login_customer
 POST {{baseUrl}}/token/
 Content-Type: application/json
 
@@ -23,6 +34,7 @@ Content-Type: application/json
 }
 
 ###! [002] Login as Store Owner
+# @name login_store_owner
 POST {{baseUrl}}/token/
 Content-Type: application/json
 
@@ -32,6 +44,7 @@ Content-Type: application/json
 }
 
 ###! [003] Login as Emma Brown (Store Owner)
+# @name login_emma
 POST {{baseUrl}}/token/
 Content-Type: application/json
 
@@ -41,6 +54,7 @@ Content-Type: application/json
 }
 
 ###! [004] Login as Admin
+# @name login_admin
 POST {{baseUrl}}/token/
 Content-Type: application/json
 
@@ -49,13 +63,13 @@ Content-Type: application/json
   "password": "password123"
 }
 
-###! [005] Logout (Requires refresh token)
+###! [005] Logout (Uses refresh token automatically)
 POST {{baseUrl}}/logout/
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "refresh": "your_refresh_token_here"
+  "refresh": "{{adminRefreshToken}}"
 }
 
 ###############################################################
@@ -63,6 +77,7 @@ Authorization: Bearer {{adminToken}}
 ###############################################################
 
 ###! [006] Create New User Account
+# @name create_test_user
 POST {{baseUrl}}/accounts/users/
 Content-Type: application/json
 
@@ -74,6 +89,16 @@ Content-Type: application/json
   "address": "123 Test St",
   "profile_picture": null,
   "role": "customer"
+}
+
+###! [006.1] Login as Test User
+# @name login_test_user
+POST {{baseUrl}}/token/
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "testpassword123"
 }
 
 ###! [007] Get My Account Information
@@ -117,7 +142,7 @@ Authorization: Bearer {{adminToken}}
 ###############################################################
 
 ###! [012] Get Product by ID
-GET {{baseUrl}}/products/20/
+GET {{baseUrl}}/products/2/
 
 ###! [013] Add Product Review
 POST {{baseUrl}}/products/20/add_review/
@@ -270,7 +295,7 @@ Content-Type: application/json
 }
 
 ###! [030] Get Product Details
-GET {{baseUrl}}/products/38/
+GET {{baseUrl}}/products/8/
 Authorization: Bearer {{storeOwnerToken}}
 
 ###! [031] Delete Product
@@ -402,7 +427,7 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 {
-  "name": "HAHAH"
+  "name": "Test"
 }
 
 ###! [047] Delete Store Category

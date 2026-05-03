@@ -7,17 +7,16 @@ from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
-from core.pagination import CustomPageNumberPagination
-from django.core.cache import cache
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
+
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
+from core.pagination import CustomPageNumberPagination
+
 from .models import User
-from .permissions import IsAdmin, IsOwner
+from .permissions import IsAdmin
 from .serializers import (
     PasswordChangeSerializer,
     UserCreateSerializer,

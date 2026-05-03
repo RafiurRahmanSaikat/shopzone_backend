@@ -27,7 +27,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
-
+# tx9q3ikUoRiptesK
 
 CORS_ALLOW_HEADERS = [
     "authorization",
@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_extensions",
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt",
@@ -65,14 +64,13 @@ INSTALLED_APPS = [
     "product",
     "store",
     "order",
-    "drf_spectacular",
     "django_filters",
 ]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -113,20 +111,34 @@ WSGI_APPLICATION = "shopzone_backend.wsgi.application"
 #     }
 # }
 
-# ! Live DATABSE
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST"),
-        "PORT": config("DB_PORT"),
-        "OPTIONS": {
-            "sslmode": "require",
-        },
+# ! Live DATABSE - Supabase with Session Pooler
+DATABASE_URL = config("DATABASE_URL", default="")
+
+# Parse DATABASE_URL manually for precise control over port
+if DATABASE_URL:
+    from urllib.parse import urlparse
+
+    parsed = urlparse(DATABASE_URL)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": parsed.path.lstrip("/") or "postgres",
+            "USER": parsed.username,
+            "PASSWORD": parsed.password,
+            "HOST": parsed.hostname,
+            "PORT": parsed.port or 5432,
+            "OPTIONS": {
+                "sslmode": "require",
+            },
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -201,3 +213,4 @@ SIMPLE_JWT = {
 
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
+FRONTEND_URL = config("FRONTEND_URL", default="http://localhost:3000")

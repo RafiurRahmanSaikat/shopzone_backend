@@ -1,12 +1,11 @@
-from core.pagination import CustomPageNumberPagination
-from order.models import Order
-from order.serializers import OrderSerializer
-from product.models import Product
-from product.serializers import ProductSerializer
-from rest_framework import status, viewsets
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from core.pagination import CustomPageNumberPagination
+from product.models import Product
+from product.serializers import ProductSerializer
 
 from .models import Store, StoreCategory
 from .permissions import IsOwnerOrAdmin
