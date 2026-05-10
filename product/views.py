@@ -79,7 +79,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=True,
-        methods=["post"],
+        methods=["post", "patch", "put", "delete"],
         permission_classes=[IsAuthenticated],
         url_path="add_review",
     )
@@ -88,11 +88,23 @@ class ProductViewSet(viewsets.ModelViewSet):
         user = request.user
         data = request.data
 
-        if Review.objects.filter(product=product, user=user).exists():
-            return Response(
-                {"detail": "You have already reviewed this product."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        review = Review.objects.filter(product=product, user=user).first()
+
+        if request.method == "DELETE":
+            if not review:
+                return Response(
+                    {"detail": "Review not found."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            review.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        if review:
+            serializer = ReviewSerializer(review, data=data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = ReviewSerializer(data=data)
         if serializer.is_valid():

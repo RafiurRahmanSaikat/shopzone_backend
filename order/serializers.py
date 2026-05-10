@@ -3,10 +3,21 @@ from rest_framework import serializers
 from .models import Cart, CartItem, Order, OrderProduct
 
 
+def _build_image_url(image_value, request):
+    if not image_value:
+        return None
+
+    image_url = str(image_value)
+    if request and image_url.startswith(("/", "media/")):
+        return request.build_absolute_uri(image_url)
+
+    return image_url
+
+
 class CartItemSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source="product.name", read_only=True)
     product_price = serializers.FloatField(source="product.price", read_only=True)
-    product_image = serializers.CharField(source="product.image", read_only=True)
+    product_image = serializers.SerializerMethodField()
     total_price = serializers.FloatField(read_only=True)
 
     class Meta:
@@ -22,6 +33,10 @@ class CartItemSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "product_name", "product_price", "total_price"]
 
+    def get_product_image(self, obj):
+        request = self.context.get("request") if hasattr(self, "context") else None
+        return _build_image_url(obj.product.image, request)
+
 
 class CartSerializer(serializers.ModelSerializer):
     cart_items = CartItemSerializer(many=True, read_only=True)
@@ -36,7 +51,7 @@ class CartSerializer(serializers.ModelSerializer):
 class OrderProductSerializer(serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source="product.name")
     product_price = serializers.ReadOnlyField(source="product.price")
-    product_image = serializers.ImageField(source="product.image")
+    product_image = serializers.SerializerMethodField()
     total_price = serializers.FloatField(read_only=True)
 
     class Meta:
@@ -50,6 +65,10 @@ class OrderProductSerializer(serializers.ModelSerializer):
             "quantity",
             "total_price",
         ]
+
+    def get_product_image(self, obj):
+        request = self.context.get("request") if hasattr(self, "context") else None
+        return _build_image_url(obj.product.image, request)
 
 
 class OrderSerializer(serializers.ModelSerializer):
