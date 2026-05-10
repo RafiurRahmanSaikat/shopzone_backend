@@ -225,8 +225,25 @@ class Command(BaseCommand):
         # ---------------------
         # 4. Create Brands
         # ---------------------
-        brands = ["Apple", "Samsung", "Sony", "LG", "Nike", "Adidas", "Microsoft"]
+        brands = [
+            "Apple",
+            "Samsung",
+            "Sony",
+            "LG",
+            "Nike",
+            "Adidas",
+            "Microsoft",
+            "Amazon",
+            "Dell",
+            "Razer",
+            "Bose",
+            "Canon",
+            "Nikon",
+            "Seagate",
+            "Whirlpool",
+        ]
         brand_objs = [Brand.objects.get_or_create(name=brand)[0] for brand in brands]
+        brand_map = {brand.name: brand for brand in brand_objs}
         self.stdout.write(self.style.SUCCESS(f"Created {len(brand_objs)} brands"))
 
         # ---------------------
@@ -242,17 +259,18 @@ class Command(BaseCommand):
             "Fashion",
             "Electronics",
             "Gaming",
-            "Books",
             "Camera",
             "Tablet",
             "Storage",
             "Appliances",
             "Smart Home",
+            "Home",
         ]
         category_objs = [
             Category.objects.get_or_create(name=category)[0]
             for category in product_categories
         ]
+        category_map = {category.name: category for category in category_objs}
         self.stdout.write(
             self.style.SUCCESS(f"Created {len(category_objs)} product categories")
         )
@@ -426,13 +444,11 @@ class Command(BaseCommand):
                 image=product_data["image"],
                 stock=randint(1, 100),
                 rating=randint(1, 5),
-                brand=choice(brand_objs),
+                brand=brand_map[product_data["brand"]],
                 store=store_choice,
             )
             # Attach matching product categories.
-            cats = [
-                cat for cat in category_objs if cat.name in product_data["categories"]
-            ]
+            cats = [category_map[name] for name in product_data["categories"]]
             product.categories.add(*cats)
             products.append(product)
         self.stdout.write(self.style.SUCCESS(f"Created {len(products)} products"))
@@ -463,25 +479,50 @@ class Command(BaseCommand):
         )
 
         # ---------------------
-        # 8. Create Orders: 3 orders per customer (each order contains 4 products)
+        # 8. Create Orders for customers and store owners
         # ---------------------
-        order_statuses = ["Confirmed", "Delivered", "Cancelled"]
+        order_statuses = [
+            Order.StatusChoices.PENDING,
+            Order.StatusChoices.CONFIRMED,
+            Order.StatusChoices.SHIPPED,
+            Order.StatusChoices.DELIVERED,
+            Order.StatusChoices.CANCELLED,
+        ]
         orders = []
-        for user in [u for u in users if u.role == "customer"]:
-            for _ in range(3):
-                status_choice = choice(order_statuses)
-                order = Order.objects.create(user=user, status=status_choice)
-                if len(products) >= 4:
-                    products_sample = sample(products, k=4)
-                    for product in products_sample:
-                        OrderProduct.objects.create(
-                            order=order,
-                            product=product,
-                            quantity=randint(1, 5),
-                        )
+
+        def create_orders_for_user(user, available_products, order_count):
+            if not available_products:
+                return 0
+
+            created_orders = 0
+            items_per_order = min(5, len(available_products))
+            for _ in range(order_count):
+                order = Order.objects.create(user=user, status=choice(order_statuses))
+                for product in sample(available_products, k=items_per_order):
+                    OrderProduct.objects.create(
+                        order=order,
+                        product=product,
+                        quantity=randint(1, 5),
+                    )
                 orders.append(order)
+                created_orders += 1
+            return created_orders
+
+        customer_count = 0
+        for user in [u for u in users if u.role == "customer"]:
+            customer_count += create_orders_for_user(user, products, 5)
+
+        store_owner_count = 0
+        for user in [u for u in users if u.role == "store_owner"]:
+            owner_products = [
+                product for product in products if product.store and product.store.owner == user
+            ]
+            store_owner_count += create_orders_for_user(user, owner_products or products, 2)
+
         self.stdout.write(
-            self.style.SUCCESS(f"Created {len(orders)} orders (3 orders per customer)")
+            self.style.SUCCESS(
+                f"Created {len(orders)} orders ({customer_count} customer orders, {store_owner_count} store-owner orders)"
+            )
         )
 
         # ---------------------
